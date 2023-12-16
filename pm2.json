@@ -1,0 +1,4 @@
+{
+    "name": "solana-blocker",
+    "script": "src/app.js"
+}
