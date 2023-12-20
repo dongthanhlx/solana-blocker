@@ -6,7 +6,7 @@ let addresses = [];
 
 function subscribe() {
     const ws = new WebSocket('wss://api.mainnet-beta.solana.com/')
-    console.log('socket open');
+    console.log('spl token socket open');
     ws.onopen = () => {
         ws.send(
             JSON.stringify({
@@ -14,7 +14,7 @@ function subscribe() {
                 id: Date.now(),
                 method: 'programSubscribe',
                 params: [
-                    "11111111111111111111111111111111",
+                    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
                     {
                         "encoding": "jsonParsed",
                         "commitment": "confirmed"
@@ -39,7 +39,7 @@ function subscribe() {
             if (pubkey && addresses.includes(pubkey)) {
                 let slot = data.params.result.context.slot
 
-                broadcast(slot, 30);
+                broadcast(slot, 60);
             }
         } catch (e) {
             console.log(e)
@@ -47,26 +47,30 @@ function subscribe() {
     })
     
     ws.on('error', function() {
-        console.log('socket error')
+        console.log('spl token socket error')
     })
 
     ws.on('close', function () {
-        console.log('socket close');
+        console.log('spl token socket close');
         setTimeout(subscribe, 1000);
     })
 }
 
 async function getAddresses() {
-    let res = await axios.post(config.get('BLOCKER_URL') + '/addresses/solana', { 'secret': config.get('BLOCKER_SECRET') });
+    let res1 = await axios.post(config.get('BLOCKER_URL') + '/addresses/usdts', { 'secret': config.get('BLOCKER_SECRET') });
+    let res2 = await axios.post(config.get('BLOCKER_URL') + '/addresses/usdcs', { 'secret': config.get('BLOCKER_SECRET') });
 
-    addresses = res.data;
+    let usdts = res1.data;
+    let usdcs = res2.data;
+
+    addresses = usdts.concat(usdcs);
 }
 
 function scheduleGetAddresses(seconds = 10) {
     getAddresses()
-        .then(() => console.log(`Succeed get ${addresses.length} addresses solana.`))
+        .then(() => console.log(`Succeed get ${addresses.length} addresses spl tokens.`))
         .catch((error) => {
-            console.log('Failed to get addresses' + error.message)
+            console.log('Failed to get addresses spl tokens: ' + error.message)
         })
 
     setTimeout(() => scheduleGetAddresses(seconds), seconds * 1000)
@@ -75,9 +79,9 @@ function scheduleGetAddresses(seconds = 10) {
 function broadcast(block, afterSeconds = 10) {
     setTimeout(() => {
         try {
-            axios.post(config.get('BLOCKER_URL') + '/transactions/solana', { block })
+            axios.post(config.get('BLOCKER_URL') + '/transactions/solana', { block, type: 'token_transfer' })
     
-            console.log('Succeed broadcast block ' + block)
+            console.log('Succeed broadcast spl token block ' + block)
         } catch (e) {
             console.error(e);
         }

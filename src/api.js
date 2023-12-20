@@ -1,37 +1,38 @@
-const solanaEx = require('./explorers/solana')
-const builderAddress = require('./builders/address/solana')
-const builderTx = require('./builders/tx/solana')
+const solEx = require('./explorers/sol')
+const solAddress = require('./builders/address/sol')
+const splToken = require('./builders/address/spl-token')
+const solTx = require('./builders/tx/sol')
+const splTokenTx = require('./builders/tx/spl-token')
 const {success, fail} = require('./response');
 
 module.exports = {
-    getTransactionsByBlocks: async(req, res) => {
-        let {from, to} = req.body;
-
-        try {
-            let transactions = await solanaEx.getBlocks(from, to);
-
-            success(res, transactions)
-        } catch (e) {
-            fail(res, e);
-            console.log(e);
-        }
-    },
-
     make: async (req, res) => {
         try {
-            let addressInfo = await builderAddress.render();
+            let currency = req.body.currency.toUpperCase();
+            let address = '';
 
-            success(res, addressInfo);
+            if (currency === 'SOL') {
+                address = solAddress.render();
+            } else {
+                address = await splToken.render(req.body)
+            }
+
+            success(res, address);
         } catch (e) {
             fail(res, e.message)
         }
     },
 
     send: async (req, res) => {
-        let {amount, sendTo, fromKey} = req.body;
-
         try {
-            let tx = await builderTx.build(amount, sendTo, fromKey)
+            let currency = req.body.currency.toUpperCase();
+            let tx = '';
+
+            if (currency === 'SOL') {
+                tx = await solTx.build(req.body)
+            } else {
+                tx = await splTokenTx.build(req.body)
+            }
 
             success(res, tx);
         } catch (e) {

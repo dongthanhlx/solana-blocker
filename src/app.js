@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser');
-const explorer = require('./explorers/solana');
+const solExplorer = require('./explorers/sol');
+const splTokenExplorer = require('./explorers/spl-token');
 const config = require('./config')
 const api = require('./api');
 
@@ -8,8 +9,11 @@ const api = require('./api');
 const app = express();
 app.use(bodyParser.json());
 
-explorer.scheduleGetAddresses();
-explorer.subscribe();
+solExplorer.scheduleGetAddresses();
+solExplorer.subscribe();
+
+splTokenExplorer.scheduleGetAddresses();
+splTokenExplorer.subscribe();
 
 app.get('/ping', api.ping);
 app.post('/addresses', api.make)
