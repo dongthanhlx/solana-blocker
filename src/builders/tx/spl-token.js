@@ -8,10 +8,15 @@ const connection = new web3.Connection(config.get('SOLANA_RPC'), 'confirmed')
 module.exports = {
     async build({currency, amount, sendTo, fromKey}) {
         const sender = web3.Keypair.fromSecretKey(bs58.decode(fromKey))
-        const to = new web3.PublicKey(sendTo);
         
         const fromAddress = await splTokenBuilder.render({
             ownerAddress: sender.publicKey,
+            currency,
+            secret: fromKey
+        })
+        
+        const toAddress = await splTokenBuilder.render({
+            ownerAddress: sendTo,
             currency,
             secret: fromKey
         })
@@ -20,7 +25,7 @@ module.exports = {
             connection,
             sender,
             fromAddress.address,
-            to,
+            toAddress.address,
             sender.publicKey,
             amount * web3.LAMPORTS_PER_SOL / 1000
         )
