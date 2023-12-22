@@ -1,4 +1,4 @@
-const {Keypair} = require('@solana/web3.js')
+const {Keypair, PublicKey} = require('@solana/web3.js')
 const bs58 = require('bs58')
 
 module.exports = {
@@ -8,6 +8,14 @@ module.exports = {
         return {
             address: account.publicKey,
             private_key: bs58.encode(account.secretKey)
+        }
+    },
+
+    mustSol(address) {
+        try {
+            return PublicKey.isOnCurve(new PublicKey(address))
+        } catch (e) {
+            return false;
         }
     }
 }

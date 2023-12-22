@@ -18,5 +18,6 @@ splTokenExplorer.subscribe();
 app.get('/ping', api.ping);
 app.post('/addresses', api.make)
 app.post('/transactions', api.send)
+app.get('/addresses/:address/sol', api.mustSol)
 
 app.listen(config.get('APP_PORT'), () => console.log(`App listening on appPort ${config.get('APP_PORT')}!`));

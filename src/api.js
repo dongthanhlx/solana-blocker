@@ -40,6 +40,12 @@ module.exports = {
         }
     },
 
+    mustSol: (req, res) => {
+        let address = req.params.address;
+
+        success(res, {result: solAddress.mustSol(address)})
+    },
+
     ping: (req, res) => {
         success(res, 'pong');
     }
