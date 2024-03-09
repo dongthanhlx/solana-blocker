@@ -13,7 +13,7 @@ module.exports = {
                 web3.SystemProgram.transfer({
                     fromPubkey: sender.publicKey,
                     toPubkey: receiver,
-                    lamports: web3.LAMPORTS_PER_SOL * amount
+                    lamports: parseInt(web3.LAMPORTS_PER_SOL * amount)
                 })
             )
     
