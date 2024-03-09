@@ -32,7 +32,7 @@ module.exports = {
             mint,
             toAddress.address,
             sender.publicKey,
-            parseInt(amount * web3.LAMPORTS_PER_SOL / 1000),
+            amount * web3.LAMPORTS_PER_SOL / 1000,
             6
         )
     }
