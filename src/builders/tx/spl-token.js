@@ -24,17 +24,59 @@ module.exports = {
             currency,
             secret: fromKey
         })
-        
-        return await splToken.transferChecked(
-            connection,
-            sender,
+
+        const computePriceIx = web3.ComputeBudgetProgram.setComputeUnitPrice({
+            microLamports: 100000,
+        });
+
+        const computeLimitIx = web3.ComputeBudgetProgram.setComputeUnitLimit({
+            units: 200000,
+        });
+
+        const transferTx = splToken.createTransferInstruction(
             fromAddress.address,
-            mint,
             toAddress.address,
             sender.publicKey,
             amount * web3.LAMPORTS_PER_SOL / 1000,
-            6
+            [],
+            splToken.TOKEN_PROGRAM_ID
         )
+
+        const transaction = new web3.Transaction().add(
+            computePriceIx,
+            computeLimitIx,
+            transferTx
+        );
+
+        transaction.recentBlockhash = (
+            await connection.getLatestBlockhash()
+        ).blockhash;
+        
+        transaction.sign(sender);
+
+        try {
+            return await web3.sendAndConfirmTransaction(
+                connection, 
+                transaction, 
+                [
+                    sender,
+                ]
+            );
+        } catch (e) {
+            console.error("Failed to send transaction:", e);
+            return null;
+        }
+
+        // return await splToken.transferChecked(
+        //     connection,
+        //     sender,
+        //     fromAddress.address,
+        //     mint,
+        //     toAddress.address,
+        //     sender.publicKey,
+        //     amount * web3.LAMPORTS_PER_SOL / 1000,
+        //     6
+        // )
     }
 }
 
