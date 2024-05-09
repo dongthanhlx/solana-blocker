@@ -41,7 +41,7 @@ module.exports = {
             toAddress: sendTo,
             amount: amount,
             seqno: seqno,
-            payload: memo,
+            payload: memo || '',
             sendMode: 3
         }).send();
 
