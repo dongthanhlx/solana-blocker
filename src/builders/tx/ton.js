@@ -36,7 +36,7 @@ module.exports = {
             sendTo = new TonWeb.utils.Address(sendTo).toString(true, true, false);
         }
 
-        return await wallet.methods.transfer({
+        let res = await wallet.methods.transfer({
             secretKey: keyPair.secretKey,
             toAddress: sendTo,
             amount: amount,
@@ -44,5 +44,7 @@ module.exports = {
             payload: memo || '',
             sendMode: 3
         }).send();
+
+        return JSON.stringify(res);
     }
 }
