@@ -29,22 +29,27 @@ module.exports = {
             return false;
         }
 
-        const seqno = await wallet.methods.seqno().call();
+        const seqno = await wallet.methods.seqno().call() || 0;
 
         const info = await tonweb.provider.getAddressInfo(sendTo);
         if (info.state !== 'active') {
             sendTo = new TonWeb.utils.Address(sendTo).toString(true, true, false);
         }
 
-        let res = await wallet.methods.transfer({
-            secretKey: keyPair.secretKey,
-            toAddress: sendTo,
-            amount: amount,
-            seqno: seqno,
-            payload: memo,
-            sendMode: 3
-        }).send();
+        try {
+            await wallet.methods.transfer({
+                secretKey: keyPair.secretKey,
+                toAddress: sendTo,
+                amount: amount,
+                seqno: seqno,
+                payload: memo,
+                sendMode: 3
+            }).send();
 
-        return JSON.stringify(res);
+            return seqno;
+        } catch (e) {
+            console.error('Failed to build transaction ton: ', e)
+            return null;
+        }
     }
 }
