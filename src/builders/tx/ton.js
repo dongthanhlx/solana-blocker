@@ -8,7 +8,7 @@ const tonweb = new TonWeb(new TonWeb.HttpProvider('https://toncenter.com/api/v2/
 const BN = TonWeb.utils.BN;
 
 module.exports = {
-    async build({ amount, sendTo, fromKey, memo = '' }) {
+    async build({ amount, sendTo, fromKey, message = '' }) {
         amount = TonWeb.utils.toNano(amount);
         const seed = await TonWebMnemonic.mnemonicToSeed(fromKey.split(' '));
         // const seed = TonWeb.utils.hexToBytes(fromKey)
@@ -42,7 +42,7 @@ module.exports = {
                 toAddress: sendTo,
                 amount: amount,
                 seqno: seqno,
-                payload: memo,
+                payload: message,
                 sendMode: 3
             }).send();
 
