@@ -3,6 +3,7 @@ const solAddress = require('./builders/address/sol')
 const splToken = require('./builders/address/spl-token')
 const solTx = require('./builders/tx/sol')
 const tonTx = require('./builders/tx/ton')
+const usdtonBuilder = require('./builders/tx/usdton')
 const splTokenTx = require('./builders/tx/spl-token')
 const {success, fail} = require('./response');
 
@@ -33,6 +34,8 @@ module.exports = {
                 tx = await solTx.build(req.body)
             } else if (currency === 'TON') {
                 tx = await tonTx.build(req.body)
+            } else if (currency === 'USDTON') {
+                tx = await usdtonBuilder.build(req.body)
             } else {
                 tx = await splTokenTx.build(req.body)
             }

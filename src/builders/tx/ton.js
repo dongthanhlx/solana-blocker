@@ -8,7 +8,7 @@ const BN = TonWeb.utils.BN;
 
 module.exports = {
     async build({ amount, sendTo, fromKey, message = '' }) {
-        amount = TonWeb.utils.toNano(amount);
+        let tonAmount = TonWeb.utils.toNano(amount);
         const seed = await TonWebMnemonic.mnemonicToSeed(fromKey.split(' '));
         // const seed = TonWeb.utils.hexToBytes(fromKey)
 
@@ -23,8 +23,8 @@ module.exports = {
 
         let balance = new BN(await tonweb.provider.getBalance((await wallet.getAddress()).toString(true, true, true)));
 
-        if (amount.gte(balance)) {
-            console.error('there is not enough balance to process the withdrawal');
+        if (tonAmount.gte(balance)) {
+            console.error('there is not enough balance to process the withdrawal: ton');
             return null;
         }
 
@@ -39,7 +39,7 @@ module.exports = {
             await wallet.methods.transfer({
                 secretKey: keyPair.secretKey,
                 toAddress: sendTo,
-                amount: amount,
+                amount: tonAmount,
                 seqno: seqno,
                 payload: message,
                 sendMode: 3
