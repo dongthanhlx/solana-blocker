@@ -1,6 +1,5 @@
 const TonWeb = require('tonweb')
 const TonWebMnemonic = require('tonweb-mnemonic')
-const config = require('../../config')
 const tonweb = new TonWeb(new TonWeb.HttpProvider('https://toncenter.com/api/v2/jsonRPC', {
     apiKey: '97b2749d3b3fba53f55a7b9108d305ffa4df5d9ea1e170360631d090206577a0'
 }))
@@ -26,7 +25,7 @@ module.exports = {
 
         if (amount.gte(balance)) {
             console.error('there is not enough balance to process the withdrawal');
-            return false;
+            return null;
         }
 
         const seqno = await wallet.methods.seqno().call() || 0;
