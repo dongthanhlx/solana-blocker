@@ -1,7 +1,7 @@
 const TonWeb = require('tonweb')
 const TonWebMnemonic = require('tonweb-mnemonic')
 const tonweb = new TonWeb(new TonWeb.HttpProvider('https://toncenter.com/api/v2/jsonRPC', {
-    apiKey: '97b2749d3b3fba53f55a7b9108d305ffa4df5d9ea1e170360631d090206577a0'
+    apiKey: 'c03b3181d84ea8d0e36cdac64ec9ab99936d4c8a757be669befc4f5965254836'
 }))
 
 const BN = TonWeb.utils.BN;
