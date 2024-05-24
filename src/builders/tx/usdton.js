@@ -20,7 +20,7 @@ module.exports = {
             wc: 0
         });
 
-        const jettonAmount = TonWeb.utils.toNano((amount / 1000).toString());
+        const jettonAmount = TonWeb.utils.toNano((amount * 1000 / 1000000).toString());
         let jettonWalletData = await jettonWallet.getData();
 
         if (jettonAmount.gte(jettonWalletData.balance)) {
