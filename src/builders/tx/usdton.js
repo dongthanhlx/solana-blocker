@@ -4,7 +4,7 @@ const tonweb = new TonWeb(new TonWeb.HttpProvider('https://toncenter.com/api/v2/
     apiKey: 'c03b3181d84ea8d0e36cdac64ec9ab99936d4c8a757be669befc4f5965254836'
 }))
 
-const jettonAddress = 'EQBrcdp1Jqniv40T9DqRHSePUy40ZJvAj7FbaY0n9TORTpv8'
+const jettonAddress = 'EQAi0UCCAo-HmYo-nLzPSW8n0CIac27iA1Lq5E7IzVVLHxdl'
 const jettonWallet = new TonWeb.token.jetton.JettonWallet(tonweb.provider, {address: jettonAddress});
 
 const BN = TonWeb.utils.BN;
