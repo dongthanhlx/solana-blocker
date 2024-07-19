@@ -17,7 +17,7 @@ function subscribe() {
                     "11111111111111111111111111111111",
                     {
                         "encoding": "jsonParsed",
-                        "commitment": "confirmed"
+                        "commitment": "processed"
                     }
                 ],
             })
