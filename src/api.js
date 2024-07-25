@@ -5,6 +5,7 @@ const solTx = require('./builders/tx/sol')
 const tonTx = require('./builders/tx/ton')
 const usdtonBuilder = require('./builders/tx/usdton')
 const splTokenTx = require('./builders/tx/spl-token')
+const nearEx = require('./explorers/near')
 const {success, fail} = require('./response');
 
 module.exports = {
@@ -50,6 +51,18 @@ module.exports = {
         let address = req.params.address;
 
         success(res, {result: solAddress.mustSol(address)})
+    },
+
+    multichain: (req, res) => {
+        let {blockchain, from, to} = req.body
+
+        if (blockchain.toUpperCase() !== 'NEAR') {
+            return fail(res, 'not_supported')
+        }
+
+        success(res, {
+            result: nearEx.multichain(from, to)
+        })
     },
 
     ping: (req, res) => {
