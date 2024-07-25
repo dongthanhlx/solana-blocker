@@ -53,7 +53,7 @@ module.exports = {
         success(res, {result: solAddress.mustSol(address)})
     },
 
-    multichain: (req, res) => {
+    multichain: async (req, res) => {
         let {blockchain, from, to} = req.body
 
         if (blockchain.toUpperCase() !== 'NEAR') {
@@ -61,7 +61,7 @@ module.exports = {
         }
 
         success(res, {
-            result: nearEx.multichain(from, to)
+            result: await nearEx.multichain(from, to)
         })
     },
 
