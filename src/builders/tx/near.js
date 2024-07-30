@@ -2,11 +2,11 @@ const { KeyPair, keyStores, connect, utils } = require("near-api-js");
 const networkId = 'mainnet';
 
 module.exports = {
-    async build({amount, sendTo, fromKey, sender}) {
+    async build({amount, sendTo, fromKey, sendFrom}) {
         const keyPair = KeyPair.fromString(fromKey);
         const keyStore = new keyStores.InMemoryKeyStore();
 
-        await keyStore.setKey(networkId, sender, keyPair);
+        await keyStore.setKey(networkId, sendFrom, keyPair);
 
         const config = {
             networkId,
@@ -18,7 +18,7 @@ module.exports = {
         };
 
         const near = await connect(config);
-        const senderAccount = await near.account(sender)
+        const senderAccount = await near.account(sendFrom)
 
         try {
             const result = await senderAccount.sendMoney(sendTo, utils.format.parseNearAmount(amount.toString()));
