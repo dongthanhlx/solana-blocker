@@ -1,10 +1,12 @@
 const solEx = require('./explorers/sol')
 const solAddress = require('./builders/address/sol')
+const nearAddress = require('./builders/address/near')
 const splToken = require('./builders/address/spl-token')
 const solTx = require('./builders/tx/sol')
 const tonTx = require('./builders/tx/ton')
 const usdtonBuilder = require('./builders/tx/usdton')
 const splTokenTx = require('./builders/tx/spl-token')
+const nearTx = require('./builders/tx/near')
 const nearEx = require('./explorers/near')
 const {success, fail} = require('./response');
 
@@ -16,6 +18,8 @@ module.exports = {
 
             if (currency === 'SOL') {
                 address = solAddress.render();
+            } else if (currency === 'NEAR') {
+                address = nearAddress.render();
             } else {
                 address = await splToken.render(req.body)
             }
@@ -37,6 +41,8 @@ module.exports = {
                 tx = await tonTx.build(req.body)
             } else if (currency === 'USDTON') {
                 tx = await usdtonBuilder.build(req.body)
+            } else if (currency === 'NEAR') {
+                tx = await nearTx.build(req.body)
             } else {
                 tx = await splTokenTx.build(req.body)
             }
