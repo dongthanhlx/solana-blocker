@@ -48,7 +48,9 @@ module.exports = {
                 sendMode: 3,
             }).send()
 
-            return seqno;
+            let accountId = new TonWeb.utils.Address(sendTo).toString(false, false, false);
+
+            return `${seqno}|${accountId}`;
         } catch (e) {
             console.error('Failed to build usdton transaction: ', e)
             return null;
