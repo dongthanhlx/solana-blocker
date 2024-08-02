@@ -24,7 +24,7 @@ module.exports = {
         let balance = new BN(await tonweb.provider.getBalance((await wallet.getAddress()).toString(true, true, true)));
 
         if (tonAmount.gte(balance)) {
-            console.error('there is not enough balance to process the withdrawal: ton');
+            console.log('there is not enough balance to process the withdrawal: ton');
             return null;
         }
 

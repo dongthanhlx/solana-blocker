@@ -26,7 +26,7 @@ module.exports = {
 
             return result.transaction.hash;
         } catch (e) {
-            console.error(e);
+            console.log(e);
             return null;
         }
     }
