@@ -18,6 +18,7 @@ async function getTransactionsByBlock(block) {
 
             let {data} = await axios.post(
                 'https://rpc.ankr.com/near/0b0b99eee34ea3c2ab0132f62e87e8ed05d5ffec286f41d88ba87117fcea6e9d',
+                // 'https://rpc.mainnet.near.org',
                 JSON.stringify(body),
                 {'Content-Type': 'application/json'}
             );
