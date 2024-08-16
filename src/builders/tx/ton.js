@@ -7,7 +7,7 @@ const tonweb = new TonWeb(new TonWeb.HttpProvider('https://toncenter.com/api/v2/
 const BN = TonWeb.utils.BN;
 
 module.exports = {
-    async build({ amount, sendTo, fromKey, message = '' }) {
+    async build({ amount, sendFrom, sendTo, fromKey, message = '' }) {
         let tonAmount = TonWeb.utils.toNano(amount);
         const seed = await TonWebMnemonic.mnemonicToSeed(fromKey.split(' '));
         // const seed = TonWeb.utils.hexToBytes(fromKey)
@@ -18,7 +18,6 @@ module.exports = {
         const wallet = new WalletClass(tonweb.provider, {
             publicKey: keyPair.publicKey
         });
-        
         // const walletAddress = (await wallet.getAddress()).toString(true, true, true);
 
         let balance = new BN(await tonweb.provider.getBalance((await wallet.getAddress()).toString(true, true, true)));
@@ -47,7 +46,7 @@ module.exports = {
 
             let accountId = new TonWeb.utils.Address(sendTo).toString(false, false, false);
 
-            return `${seqno}|${accountId}`;
+            return `${seqno}|${accountId}|${sendFrom}`;
         } catch (e) {
             console.error('Failed to build transaction ton: ', e)
             return null;
