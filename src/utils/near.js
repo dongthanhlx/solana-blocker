@@ -39,15 +39,16 @@ async function getTransactionsByBlock(block) {
 
 async function multichain(from, to) {
     let callbacks = [];
+    let block = from;
 
-    while (from <= to) {
+    while (block <= to) {
         callbacks.push(
             new Promise((resolve, reject) => {
-                resolve(getTransactionsByBlock(from))
+                resolve(getTransactionsByBlock(block))
             })
         )
 
-        from++;
+        block++;
     }
 
     let res = await Promise.all(callbacks).then(transactions => {

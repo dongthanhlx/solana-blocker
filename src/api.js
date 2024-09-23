@@ -7,7 +7,7 @@ const tonTx = require('./builders/tx/ton')
 const usdtonBuilder = require('./builders/tx/usdton')
 const splTokenTx = require('./builders/tx/spl-token')
 const nearTx = require('./builders/tx/near')
-const nearEx = require('./explorers/near')
+const utils = require('./utils/index')
 const {success, fail} = require('./response');
 
 module.exports = {
@@ -62,12 +62,12 @@ module.exports = {
     multichain: async (req, res) => {
         let {blockchain, from, to} = req.body
 
-        if (blockchain.toUpperCase() !== 'NEAR') {
+        if (!['near', 'arbitrum'].includes(blockchain.toLowerCase())) {
             return fail(res, 'not_supported')
         }
 
         success(res, {
-            result: await nearEx.multichain(from, to)
+            result: await utils[blockchain.toLowerCase()].multichain(from, to)
         })
     },
 
