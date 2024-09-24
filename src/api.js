@@ -62,7 +62,7 @@ module.exports = {
     multichain: async (req, res) => {
         let {blockchain, from, to} = req.body
 
-        if (!['near', 'arbitrum'].includes(blockchain.toLowerCase())) {
+        if (!['near', 'arbitrum', 'solana'].includes(blockchain.toLowerCase())) {
             return fail(res, 'not_supported')
         }
 
