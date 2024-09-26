@@ -8,6 +8,7 @@ const usdtonBuilder = require('./builders/tx/usdton')
 const splTokenTx = require('./builders/tx/spl-token')
 const nearTx = require('./builders/tx/near')
 const utils = require('./utils/index')
+const transactionBuilder = require('./builders/tx/index')
 const {success, fail} = require('./response');
 
 module.exports = {
@@ -32,20 +33,22 @@ module.exports = {
 
     send: async (req, res) => {
         try {
-            let currency = req.body.currency.toUpperCase();
-            let tx = '';
+            let currency = req.body.currency.toLowerCase();
+            // let tx = '';
+            //
+            // if (currency === 'SOL') {
+            //     tx = await solTx.build(req.body)
+            // } else if (currency === 'TON') {
+            //     tx = await tonTx.build(req.body)
+            // } else if (currency === 'USDTON') {
+            //     tx = await usdtonBuilder.build(req.body)
+            // } else if (currency === 'NEAR') {
+            //     tx = await nearTx.build(req.body)
+            // } else {
+            //     tx = await splTokenTx.build(req.body)
+            // }
 
-            if (currency === 'SOL') {
-                tx = await solTx.build(req.body)
-            } else if (currency === 'TON') {
-                tx = await tonTx.build(req.body)
-            } else if (currency === 'USDTON') {
-                tx = await usdtonBuilder.build(req.body)
-            } else if (currency === 'NEAR') {
-                tx = await nearTx.build(req.body)
-            } else {
-                tx = await splTokenTx.build(req.body)
-            }
+            let tx = await transactionBuilder[currency].build(req.body)
 
             success(res, tx);
         } catch (e) {
