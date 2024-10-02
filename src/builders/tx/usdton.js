@@ -10,7 +10,7 @@ const jettonWallet = new TonWeb.token.jetton.JettonWallet(tonweb.provider, {addr
 const BN = TonWeb.utils.BN;
 
 module.exports = {
-    async build({ amount, sendTo, fromKey, message = '' }) {
+    async build({ amount, sendFrom, sendTo, fromKey, message = '' }) {
         const seed = await TonWebMnemonic.mnemonicToSeed(fromKey.split(' '));
         const keyPair = TonWeb.utils.keyPairFromSeed(seed);
 
@@ -50,7 +50,7 @@ module.exports = {
 
             let accountId = new TonWeb.utils.Address(sendTo).toString(false, false, false);
 
-            return `${seqno}|${accountId}`;
+            return `${seqno}|${sendFrom}|${accountId}`;
         } catch (e) {
             console.error('Failed to build usdton transaction: ', e)
             return null;
