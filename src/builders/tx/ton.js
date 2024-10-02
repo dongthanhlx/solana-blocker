@@ -46,7 +46,7 @@ module.exports = {
 
             let accountId = new TonWeb.utils.Address(sendTo).toString(false, false, false);
 
-            return `${seqno}|${accountId}|${sendFrom}`;
+            return `${seqno}|${sendFrom}|${accountId}`;
         } catch (e) {
             console.error('Failed to build transaction ton: ', e)
             return null;
