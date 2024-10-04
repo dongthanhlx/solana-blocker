@@ -6,4 +6,5 @@ module.exports = {
     usdcs: require('./spl-token'),
     ton: require('./ton'),
     usdton: require('./usdton'),
+    sui: require('./sui'),
 }
